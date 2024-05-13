@@ -1,0 +1,22 @@
+services:
+  app:
+    build: . # Caminho para o Dockerfile da sua aplicação Spring Boot
+    ports:
+      - '8080:8080' # Mapeia a porta 8080 do container para a porta 8080 do host
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/database # Define a URL do banco de dados
+      SPRING_DATASOURCE_USERNAME: postgres # Usuário do banco de dados
+      SPRING_DATASOURCE_PASSWORD: password # Senha do banco de dados
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest # Imagem oficial do PostgreSQL
+    environment:
+      POSTGRES_PASSWORD: password # Senha do banco de dados (deve ser igual ao da aplicação)
+      POSTGRES_USER: postgres # Usuário do banco de dados (deve ser igual ao da aplicação)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Volume persistente para dados do banco
+
+volumes:
+  postgres_data: {} # Define o volume persistente
