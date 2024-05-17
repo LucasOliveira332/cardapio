@@ -9,10 +9,10 @@ export function Card({ price, title, image }: CardProps) {
   return (
     <div>
       <div className="card">
-        <img src="" alt="" />
-        <h2></h2>
+        <img src={image} alt="sandwich image" />
+        <h2>{title}</h2>
         <p>
-          <b>Valor:</b>
+          <b>Valor: {price}</b>
         </p>
       </div>
     </div>

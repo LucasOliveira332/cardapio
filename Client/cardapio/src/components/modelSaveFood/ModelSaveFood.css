@@ -1,0 +1,25 @@
+form {
+  background-color: #242424;
+  padding: 30px;
+  width: 500px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+}
+
+form div input {
+  margin-top: 5px;
+}
+
+form button {
+  margin-top: 10px;
+  background-color: green;
+}
