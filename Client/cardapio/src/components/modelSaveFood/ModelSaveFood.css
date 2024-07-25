@@ -1,3 +1,13 @@
+.create-form.is-open {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
 form {
   background-color: #242424;
   padding: 30px;
@@ -8,15 +18,11 @@ form {
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
-}
-
-form div {
-  display: flex;
-  flex-direction: column;
+  color: white;
 }
 
 form div input {
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 form button {

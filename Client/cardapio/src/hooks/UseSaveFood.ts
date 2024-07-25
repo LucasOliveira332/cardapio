@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchSaveData } from './useFoodData';
+import { FoodService } from '../service/FoodService';
 
 const defaultDataFood = {
   title: '',
@@ -7,22 +7,22 @@ const defaultDataFood = {
   price: 0,
 };
 
-const useSaveFood = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+type UseSaveFoodReturn = [boolean, string, (data: SaveFood) => void];
+
+const useSaveFood = (): UseSaveFoodReturn => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
   const [data, setData] = useState<SaveFood>(defaultDataFood);
 
   useEffect(() => {
     const handleData = async () => {
-      console.log(data);
       if (!data.title) return;
 
       setIsLoading(true);
-      setError(null);
+      setError('');
 
       try {
-        const response = await fetchSaveData(data);
-        console.log(response);
+        await FoodService.post(data);
       } catch (err: any) {
         setError(err);
       } finally {

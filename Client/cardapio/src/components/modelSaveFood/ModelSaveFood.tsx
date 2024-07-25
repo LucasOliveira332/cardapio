@@ -1,8 +1,8 @@
-import React, { FormEventHandler, MouseEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import './ModelSaveFood.css';
 import useSaveFood from '../../hooks/UseSaveFood';
 
-interface FormData {
+interface SaveFood {
   title: string;
   image: string;
   price: number;
@@ -10,40 +10,53 @@ interface FormData {
 
 interface FormProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const initialFormData: FormData = {
+const initialFormData: SaveFood = {
   title: '',
   image: '',
   price: 0,
 };
 
+interface Field {
+  id: keyof SaveFood;
+  label: string;
+  type: string;
+}
+
+const fields: Field[] = [
+  { id: 'title', label: 'Title', type: 'text' },
+  { id: 'image', label: 'ImageURL', type: 'text' },
+  { id: 'price', label: 'Price', type: 'number' },
+];
+
 const ModelSaveFood = ({ isOpen, onClose }: FormProps) => {
-  const [loading, error, setData] = useSaveFood();
+  const [isLoading, error, setData] = useSaveFood();
   const [formData, setFormData] = useState<SaveFood>(initialFormData);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({
+    target,
+  }) => {
+    const { id, value } = target;
+    setFormData({ ...formData, [id]: value });
+  };
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     setData(formData);
     setFormData(initialFormData);
-    if (loading) {
-      onClose();
+  };
+
+  const closeModel: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    const isOverlay = event.target === event.currentTarget;
+    if (isOpen && isOverlay) {
+      onClose(false);
     }
-  }
-
-  function handleChange({ target }: React.ChangeEvent<HTMLInputElement>) {
-    setFormData({ ...formData, [target.id]: target.value });
-  }
-
-  const fields = [
-    { id: 'title', label: 'Title', type: 'text' },
-    { id: 'image', label: 'ImageURL', type: 'text' },
-    { id: 'price', label: 'Price', type: 'number' },
-  ];
+  };
 
   return (
-    <div className="create-form">
+    <div className={`create-form ${isOpen && 'is-open'}`} onClick={closeModel}>
       {isOpen && (
         <form onSubmit={handleSubmit}>
           {fields.map(({ id, label, type }) => (
@@ -57,7 +70,9 @@ const ModelSaveFood = ({ isOpen, onClose }: FormProps) => {
               />
             </div>
           ))}
-          <button disabled={loading}>{loading ? 'Saving...' : 'Save'}</button>
+          <button disabled={isLoading}>
+            {isLoading ? 'Saving...' : 'Save'}
+          </button>
           {error && <p className="error-message">{error}</p>}
         </form>
       )}
